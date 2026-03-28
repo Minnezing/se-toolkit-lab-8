@@ -94,6 +94,13 @@ def main():
 
     print(f"Using config: {resolved_path}", file=sys.stderr)
 
+    # Export environment variables for MCP subprocesses
+    # This ensures MCP servers inherit the correct settings
+    if lms_backend_url := os.environ.get("NANOBOT_LMS_BACKEND_URL"):
+        os.environ["NANOBOT_LMS_BACKEND_URL"] = lms_backend_url
+    if lms_api_key := os.environ.get("NANOBOT_LMS_API_KEY"):
+        os.environ["NANOBOT_LMS_API_KEY"] = lms_api_key
+
     # Launch nanobot gateway
     os.execvp(
         "nanobot",

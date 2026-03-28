@@ -6,6 +6,7 @@ members = [
   "nanobot",
   "nanobot-websocket-channel/nanobot-webchat",
   "nanobot-websocket-channel/mcp-webchat",
+  "mcp/mcp-obs",
   # "mcp/mcp-obs",
   # "nanobot-websocket-channel/nanobot-webchat",
   # "nanobot-websocket-channel/client-telegram-bot",
