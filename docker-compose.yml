@@ -227,31 +227,31 @@ services:
       start_period: 10s
 
   # Optional Task 1 — uncomment after you add the Telegram client repo in Task 2.
-  # client-telegram-bot:
-  #   build:
-  #     context: ./nanobot-websocket-channel/client-telegram-bot
-  #     additional_contexts:
-  #       workspace: ./nanobot-websocket-channel
-  #     dockerfile: Dockerfile
-  #     args:
-  #       REGISTRY_PREFIX_DOCKER_HUB: ${REGISTRY_PREFIX_DOCKER_HUB:-}
-  #   restart: unless-stopped
-  #   networks:
-  #     - lms-network
-  #   environment:
-  #     - BOT_TOKEN=${BOT_TOKEN:?'BOT_TOKEN is required'}
-  #     - NANOBOT_WS_URL=${NANOBOT_WS_URL:?'NANOBOT_WS_URL is required'}
-  #     - NANOBOT_ACCESS_KEY=${NANOBOT_ACCESS_KEY:?'NANOBOT_ACCESS_KEY is required'}
-  #     - OTEL_SERVICE_NAME=client-telegram-bot
-  #     - OTEL_TRACES_EXPORTER=otlp
-  #     - OTEL_METRICS_EXPORTER=none
-  #     - OTEL_LOGS_EXPORTER=otlp
-  #     - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:${CONST_OTEL_COLLECTOR_GRPC_PORT:?'CONST_OTEL_COLLECTOR_GRPC_PORT is required'}
-  #     - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
-  #     - OTEL_PYTHON_LOG_CORRELATION=true
-  #   depends_on:
-  #     - nanobot
-  #     - otel-collector
+  client-telegram-bot:
+    build:
+      context: ./nanobot-websocket-channel/client-telegram-bot
+      additional_contexts:
+        workspace: ./nanobot-websocket-channel
+      dockerfile: Dockerfile
+      args:
+        REGISTRY_PREFIX_DOCKER_HUB: ${REGISTRY_PREFIX_DOCKER_HUB:-}
+    restart: unless-stopped
+    networks:
+      - lms-network
+    environment:
+      - BOT_TOKEN=${BOT_TOKEN:?'BOT_TOKEN is required'}
+      - NANOBOT_WS_URL=${NANOBOT_WS_URL:?'NANOBOT_WS_URL is required'}
+      - NANOBOT_ACCESS_KEY=${NANOBOT_ACCESS_KEY:?'NANOBOT_ACCESS_KEY is required'}
+      - OTEL_SERVICE_NAME=client-telegram-bot
+      - OTEL_TRACES_EXPORTER=otlp
+      - OTEL_METRICS_EXPORTER=none
+      - OTEL_LOGS_EXPORTER=otlp
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:${CONST_OTEL_COLLECTOR_GRPC_PORT:?'CONST_OTEL_COLLECTOR_GRPC_PORT is required'}
+      - OTEL_EXPORTER_OTLP_PROTOCOL=grpc
+      - OTEL_PYTHON_LOG_CORRELATION=true
+    depends_on:
+      - nanobot
+      - otel-collector
 
   victorialogs:
     image: ${REGISTRY_PREFIX_DOCKER_HUB:-}victoriametrics/victoria-logs:latest
