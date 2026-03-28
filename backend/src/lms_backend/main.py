@@ -8,6 +8,7 @@ from contextlib import asynccontextmanager
 from fastapi import Depends, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from sqlalchemy.exc import SQLAlchemyError
 from starlette.middleware.base import RequestResponseEndpoint
 from starlette.responses import Response
 
@@ -34,6 +35,27 @@ app = FastAPI(
     version="0.1.0",
     lifespan=lifespan,
 )
+
+
+@app.exception_handler(SQLAlchemyError)
+async def database_error_handler(request: Request, exc: SQLAlchemyError):
+    """Handle database errors with 503 Service Unavailable."""
+    logger.error(
+        "database_error",
+        extra={
+            "event": "database_error",
+            "path": request.url.path,
+            "error": str(exc),
+        },
+    )
+    return JSONResponse(
+        status_code=503,
+        content={
+            "detail": "Database service unavailable",
+            "type": type(exc).__name__,
+            "path": request.url.path,
+        },
+    )
 
 
 @app.exception_handler(Exception)
